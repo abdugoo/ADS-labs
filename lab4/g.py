@@ -10,18 +10,26 @@ class Node:
 class BST:
     def __init__(self):
         self.root = None
-    def insert(self, current, data):
-        prev = None
-        while current is not None:
-            prev = current
-            if data < current.data:
-                current = current.left
-            else:
-                current = current.right
-        if data < prev.data:
-            prev.left = Node(data)
-        else:
-            prev.right = Node(data)
+    def insert(self, pairs):
+        stack = []
+        for value, index in pairs:
+            current = Node(value)
+            last_popped = None
+            while stack and stack[-1][1] > index:
+                last_popped = stack.pop()
+
+            if last_popped is not None:
+                current.left = last_popped[0]
+            if stack:
+                stack[-1][0].right = current
+
+            stack.append([current, index])
+
+        bst.root = stack[0][0]
+
+
+
+        
 
 
     def post_order(self, node_root):
@@ -56,9 +64,10 @@ class BST:
 
 n = int(input())
 numbers= list(map(int, input().split()))
+numbers = list(dict.fromkeys(numbers))
+pairs = [(value, i) for i, value in enumerate(numbers)]
+pairs.sort()
 bst = BST()
-bst.root = Node(numbers[0])
-for x in numbers[1:]:
-    bst.insert(bst.root, x)
+bst.insert(pairs)
 
 bst.post_order(bst.root)
