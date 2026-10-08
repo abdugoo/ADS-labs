@@ -10,10 +10,10 @@ class MinHeap:
 
     def parent(self, ind):
         return (ind - 1) // 2
-    def left_child(self, ind):
+    def left(self, ind):
         return (ind * 2 + 1)   
-    def right_child(self, ind):
-        return (ind * 2 + 3)
+    def right(self, ind):
+        return (ind * 2 + 2)
     def GetMin(self):
         return self.a[0]
 
@@ -30,7 +30,7 @@ class MinHeap:
         if self.left(i) > (len(self.a) - 1):
             return #if index out of list we stop the recursion
         
-        if self.a[self.right(i)] < self.a[j] and self.right(i) < len(self.a):
+        if self.right(i) < len(self.a) and self.a[self.right(i)] < self.a[j]:
             j = self.right(i)
 
         if self.a[i] > self.a[j]:
@@ -39,7 +39,7 @@ class MinHeap:
 
     def ExctractMini(self):
         mini = self.a[0]
-        self.a[0], self.a[-1] = self.a[-1], self.a[0]
+        self.a[0] = self.a[len(self.a) - 1]
         self.a.pop()
         if len(self.a) > 0:
             self.heapify(0)
@@ -52,4 +52,18 @@ mheap = MinHeap()
 for x in numbers:
     mheap.insert(x)
 
+nn = n // 2 + 1
+
+sum = 0
+print(mheap.a)
+while len(mheap.a) > 1:
+    x1 = mheap.ExctractMini()
+    x2 = mheap.ExctractMini()
+    s = x1 + x2
+    mheap.insert(s)
+    sum += s
+
+
+print(sum)
+    
 
