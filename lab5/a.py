@@ -6,42 +6,42 @@ input = sys.stdin.readline
 
 class MinHeap:
     def __init__(self):
-        self.a = [] #list 
-
-    def parent(self, ind):
-        return (ind - 1) // 2
-    def left(self, ind):
-        return (ind * 2 + 1)   
-    def right(self, ind):
-        return (ind * 2 + 2)
-    def GetMin(self):
-        return self.a[0]
-
-    def insert(self, x):
-        self.a.append(x)
-
-        index = len(self.a) - 1
-        while index > 0 and self.a[self.parent(index)] > self.a[index]:
-            self.a[self.parent(index)], self.a[index] = self.a[index], self.a[self.parent(index)]
-            index = self.parent(index)
+        pass
 
     def heapify(self, i):
-        j = self.left(i)
-        if self.left(i) > (len(self.a) - 1):
-            return #if index out of list we stop the recursion
-        
-        if self.right(i) < len(self.a) and self.a[self.right(i)] < self.a[j]:
-            j = self.right(i)
+        while True:
+            smallest = i
+            left = i * 2 + 1
+            right = i * 2 + 2
+            n = len(numbers)
+            if left < n and numbers[left] < numbers[smallest]:
+                smallest = left
 
-        if self.a[i] > self.a[j]:
-            self.a[i], self.a[j] = self.a[j], self.a[i]
-            self.heapify(j)
+            if right < n and numbers[right] < numbers[smallest]:
+                smallest = right
+
+            if smallest == i:
+                break
+
+            numbers[smallest], numbers[i] = numbers[i], numbers[smallest]
+            i = smallest
+    
+    def insert(self, element):
+        numbers.append(element)
+
+        index = len(numbers) - 1
+        parent = (index - 1) // 2
+        
+        while index > 0 and numbers[index] < numbers[parent]:
+            numbers[index], numbers[parent] = numbers[parent], numbers[index]
+            index = parent
+            parent = (index - 1) // 2
 
     def ExctractMini(self):
-        mini = self.a[0]
-        self.a[0] = self.a[len(self.a) - 1]
-        self.a.pop()
-        if len(self.a) > 0:
+        mini = numbers[0]
+        numbers[0] = numbers[-1]
+        numbers.pop()
+        if len(numbers) > 0:
             self.heapify(0)
 
         return mini
@@ -49,20 +49,24 @@ class MinHeap:
 n = int(input())
 numbers = list(map(int, input().split()))
 mheap = MinHeap()
-for x in numbers:
-    mheap.insert(x)
-
-nn = n // 2 + 1
-
 sum = 0
-print(mheap.a)
-while len(mheap.a) > 1:
+for i in range((len(numbers)//2 - 1), -1, -1):
+    mheap.heapify(i)
+while len(numbers) > 1:
+    x1 = mheap.ExctractMini()
+    x2 =  numbers[0]
+    s = x1 + x2
+    sum += s
+
+    numbers[0] = s
+    mheap.heapify(0)
+    """
     x1 = mheap.ExctractMini()
     x2 = mheap.ExctractMini()
     s = x1 + x2
     mheap.insert(s)
     sum += s
-
+    """
 
 print(sum)
     
